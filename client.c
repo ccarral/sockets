@@ -2,7 +2,7 @@
  * File              : client.c
  * Author            : Carlos Carral <carloscarral13@gmail.com>
  * Date              : 10/08/2020
- * Last Modified Date: 11/08/2020
+ * Last Modified Date: 12/08/2020
  *
  * Simple socket client file
  *
@@ -26,14 +26,14 @@ int main(int argc, char **argv)
   int socketfd, portno, n;
   struct sockaddr_in serv_addr;
   struct hostent *server;
-  char buffer[256];
+  char buffer[256] = { 0 };
 
   if (argc < 2) {
-    fprintf(stderr, "usage: %s hostname port", argv[0]);
+    fprintf(stderr, "usage: %s port", argv[0]);
     exit(EXIT_FAILURE);
   }
 
-  printf("Bienvenido\n");
+  printf("Client\n");
 
   portno = atoi(argv[1]);
   socketfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(portno);
 
-  if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) < 0) {
+  if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
     error("Invalid address\n");
   }
 

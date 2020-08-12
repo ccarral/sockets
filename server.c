@@ -2,7 +2,7 @@
  * File              : server.c
  * Author            : Carlos Carral <carloscarral13@gmail.com>
  * Date              : 10/08/2020
- * Last Modified Date: 11/08/2020
+ * Last Modified Date: 12/08/2020
  *
  * Simple socket server file
  *
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     exit(1);
   }
 
-  printf("Bienvenido\n");
+  printf("Server\n");
 
   // Creating socket file descriptor
   socketfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -48,7 +48,8 @@ int main(int argc, char **argv)
   CLEAR(serv_addr);
 
   portno = atoi(argv[1]);
-  printf("Listening on port %d", portno);
+
+  printf("Listening on port %d\n", portno);
 
   if (setsockopt(socketfd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
                  sizeof(opt)))
@@ -64,10 +65,10 @@ int main(int argc, char **argv)
   if (listen(socketfd, 5) < 0)
     error("listen");
 
-  clilen = sizeof(cli_addr);
+  int addr_len = sizeof(serv_addr);
 
-  newsockfd =
-          accept(socketfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+  newsockfd = accept(socketfd, (struct sockaddr *)&serv_addr,
+                     (socklen_t *)(&addr_len));
 
   if (newsockfd < 0)
     error("ERROR on accept");
@@ -88,7 +89,7 @@ int main(int argc, char **argv)
   if (n < 0)
     error("ERROR writing to socket");
 
-  printf("Response sent");
+  printf("Response sent\n");
 
   return 0;
 }
